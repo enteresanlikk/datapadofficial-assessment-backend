@@ -1,3 +1,5 @@
+import { Id, Aggregation, Dimension } from '../enums/mod.ts';
+
 export type MetricRow = {
     eventTime: string;
     eventType: string;
@@ -10,15 +12,30 @@ export type MetricRow = {
     userSession: string;
 };
 
-export type MetricResponseData = {
-    metric: string;
-    dimensions: string[];
-    aggregation: string;
-    filter?: {
-      date: {
-        from: string;
-        to: string;
-      }
-    };
-    data: any | null;
+export type MetricResponse = {
+    metric: Id;
+    dimensions: Dimension[];
+    aggregation: Aggregation;
+    filter: MetricFilter | null;
+    data: Metric[] | null;
+};
+
+export type MetricFilter = {
+  date: MetricFilterDate;
+};
+
+export type MetricFilterDate = {
+  from: string;
+  to: string;
+};
+
+export type Metric = Record<string, MetricItem[]>;
+
+export type MetricItem = Record<string, string | number>;
+
+export type MetricOptions = {
+  metric: Id;
+  dimension: Dimension;
+  aggregation: Aggregation;
+  filter: MetricFilter;
 };

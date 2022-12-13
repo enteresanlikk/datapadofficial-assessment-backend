@@ -1,4 +1,4 @@
-export enum Metric {
+export enum Id {
     Revenue = 'revenue',
     Sessions = 'sessions',
     Conversion = 'conversion',
@@ -12,8 +12,15 @@ export enum Dimension {
     Customer = 'customer',
 }
 
-export enum Aggregate {
+export enum Aggregation {
     Sum = 'sum',
     Avg = 'avg',
     Distinct = 'distinct',
+}
+
+export enum EventType {
+    Cart = 'cart',
+    Purchase = 'purchase',
+    Refund = 'refund',
+    View = 'view',
 }

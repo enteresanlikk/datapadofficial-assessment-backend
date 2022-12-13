@@ -1,14 +1,12 @@
-import { Application } from 'https://deno.land/x/oak/mod.ts';
-import { oakCors } from 'https://deno.land/x/cors/mod.ts';
-
+import { oak, cors } from './deps.ts';
 import { PORT } from './env.ts';
-import routes from './routes/metrics.route.ts';
+import routes from './routers/index.ts';
 
-const app = new Application();
+const app = new oak.Application();
 
-app.use(oakCors());
+app.use(cors.oakCors());
 app.use(routes.routes());
 app.use(routes.allowedMethods());
 
 console.log(`App started at http://localhost:${PORT}`);
-await app.listen({ port: PORT });
+await app.listen({ port: +PORT });
