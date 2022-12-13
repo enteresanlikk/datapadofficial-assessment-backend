@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Id, Dimension, Aggregation } from '../enums/mod.ts';
 
 class Tools {

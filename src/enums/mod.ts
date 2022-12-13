@@ -24,3 +24,8 @@ export enum EventType {
     Refund = 'refund',
     View = 'view',
 }
+
+export enum DataReadMode {
+    API = 'api',
+    JSON_FILE = 'file',
+}

@@ -5,13 +5,16 @@ import {
     GOOGLE_API_KEY
 } from '../env.ts';
 import type { MetricRow } from '../types/mod.ts';
-import { IService, ISpreadsheetsService } from '../abstractions/mod.ts';
+import { DataReadMode } from '../enums/mod.ts';
+import { ISpreadsheetsService } from '../abstractions/mod.ts';
 
-class SpreadsheetsService implements IService, ISpreadsheetsService {
+class SpreadsheetsService implements ISpreadsheetsService {
     private baseAPIUrl: string;
+    private dataReadMode: DataReadMode;
 
-    constructor() {
+    constructor(dataReadMode?: DataReadMode) {
         this.baseAPIUrl = 'https://sheets.googleapis.com/v4/spreadsheets';
+        this.dataReadMode = dataReadMode || DataReadMode.API;
     }
 
     private async getData(sheetId: string, sheetName: string) : Promise<string[][]> {
@@ -32,7 +35,7 @@ class SpreadsheetsService implements IService, ISpreadsheetsService {
         return rows;
     }
 
-    private async getMetricsByAPI() : Promise<MetricRow[]> {
+    private async getMetricsByAPI() : Promise<MetricRow[]> {        
         const data: string[][] = await this.getData(`${SHEET_ID}`, `${DATA_SHEET_NAME}`);
 
         const rows : MetricRow[] = data.map((row: string[]) => {
@@ -52,9 +55,13 @@ class SpreadsheetsService implements IService, ISpreadsheetsService {
         return rows;
     }
 
-    public async getMetrics() : Promise<MetricRow[]> {
-        // TODO
-        return await this.getMetricsByFile();
+    public async getMetrics() : Promise<MetricRow[] | null> {        
+        if (this.dataReadMode === DataReadMode.API) {
+            return await this.getMetricsByAPI();
+        } else if (this.dataReadMode === DataReadMode.JSON_FILE) {
+            return await this.getMetricsByFile();
+        }
+        return null;
     }
 }
 

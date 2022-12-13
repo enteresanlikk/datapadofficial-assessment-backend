@@ -1,10 +1,11 @@
+//@ts-nocheck
 import { datetime } from '../deps.ts';
 import SpreadsheetsService from './SpreadsheetsService.ts';
-import { IService, IMetricsService } from '../abstractions/mod.ts';
+import { IMetricsService } from '../abstractions/mod.ts';
 import { Id, Dimension, Aggregation, EventType } from '../enums/mod.ts';
 import type { MetricRow, MetricOptions, MetricFilter, Metric } from '../types/mod.ts';
 
-class MetricService implements IService, IMetricsService {
+class MetricService implements IMetricsService {
     private spreadsheetsService: SpreadsheetsService;
     private metric: Id;
     private dimension: Dimension;

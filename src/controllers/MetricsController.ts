@@ -2,10 +2,9 @@ import { oak, oakHelpers } from '../deps.ts';
 import MetricService from '../services/MetricsService.ts';
 import MetricService2 from '../services/MetricsService2.ts';
 import type { MetricResponse, MetricOptions } from '../types/mod.ts';
-import { IController } from '../abstractions/mod.ts';
 import Tools from '../utils/Tools.ts';
 
-class MetricsController implements IController {
+class MetricsController {
   public static async getMetrics(ctx: oak.Context) {
     const query = oakHelpers.getQuery(ctx);
 
