@@ -4,6 +4,7 @@ import SpreadsheetsService from './SpreadsheetsService.ts';
 import { IMetricsService } from '../abstractions/mod.ts';
 import { Id, Dimension, Aggregation, EventType } from '../enums/mod.ts';
 import type { MetricRow, MetricOptions, MetricFilter, Metric } from '../types/mod.ts';
+import Tools from '../utils/Tools.ts';
 
 class MetricService2 implements IMetricsService {
     private spreadsheetsService: SpreadsheetsService;
@@ -19,10 +20,6 @@ class MetricService2 implements IMetricsService {
         this.dimension = options.dimension;
         this.aggregation = options.aggregation;
         this.filter = options.filter;
-    }
-
-    private capitalize(text: string): string {
-        return text.charAt(0).toUpperCase() + text.slice(1);
     }
 
     public async getMetrics(): Promise<Metric[] | null> {
@@ -111,7 +108,7 @@ class MetricService2 implements IMetricsService {
             Object.keys(groupedData).map(key => {
                 const items = groupedData[key];
                 const total = items.reduce((acc: number, item: MetricRow) => acc + parseFloat(item.price), 0);
-                retVal[this.capitalize(key)] = [
+                retVal[Tools.capitalize(key)] = [
                     {
                         value: (total / items.length).toFixed(2),
                     }
@@ -122,7 +119,7 @@ class MetricService2 implements IMetricsService {
         if(this.metric === Id.Sessions) {
             Object.keys(groupedData).map(key => {
                 const items = groupedData[key];
-                retVal[this.capitalize(key)] = [
+                retVal[Tools.capitalize(key)] = [
                     {
                         value: (items.length).toFixed(0),
                     }
@@ -135,7 +132,7 @@ class MetricService2 implements IMetricsService {
                 const items = groupedData[key];
                 const purchases = items.filter((item: MetricRow) => item.eventType === EventType.Purchase);
 
-                retVal[this.capitalize(key)] = [
+                retVal[Tools.capitalize(key)] = [
                     {
                         sessions: items.length,
                         purchases: purchases.length,
@@ -155,7 +152,7 @@ class MetricService2 implements IMetricsService {
                 const totalPurchases = purchases.reduce((acc: number, item: MetricRow) => acc + parseFloat(item.price), 0);
                 const totalRefunds = refunds.reduce((acc: number, item: MetricRow) => acc + parseFloat(item.price), 0);
     
-                retVal[this.capitalize(key)] = [
+                retVal[Tools.capitalize(key)] = [
                     {
                         value: (totalPurchases - totalRefunds).toFixed(2),
                     }
@@ -163,7 +160,7 @@ class MetricService2 implements IMetricsService {
             });
         }
 
-        return Object.keys(retVal).length > 0 ? retVal : null;
+        return Object.keys(retVal).length > 0 ? Tools.orderByObjectKey(retVal) : null;
     }
 }
 
