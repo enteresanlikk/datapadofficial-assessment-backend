@@ -16,24 +16,6 @@ class MetricsController {
       return;
     }
 
-    if (!Tools.isIdValid(id)) {
-      ctx.response.status = 400;
-      ctx.response.body = { message: 'id parameter is not valid.' };
-      return;
-    }
-
-    if (!Tools.isDimensionValid(dimensions)) {
-      ctx.response.status = 400;
-      ctx.response.body = { message: 'dimensions parameter is not valid.' };
-      return;
-    }
-
-    if (!Tools.isAggregationValid(aggregate)) {
-      ctx.response.status = 400;
-      ctx.response.body = { message: 'aggregate parameter is not valid.' };
-      return;
-    }
-
     const responseBody: MetricResponse = <MetricResponse>{
       metric: id,
       dimensions: dimensions.split(','),
@@ -70,6 +52,24 @@ class MetricsController {
     if (!id || !dimensions || !aggregate) {
       ctx.response.status = 400;
       ctx.response.body = { message: 'bad request.' };
+      return;
+    }
+
+    if (!Tools.isIdValid(id)) {
+      ctx.response.status = 400;
+      ctx.response.body = { message: 'id parameter is not valid.' };
+      return;
+    }
+
+    if (!Tools.isDimensionValid(dimensions)) {
+      ctx.response.status = 400;
+      ctx.response.body = { message: 'dimensions parameter is not valid.' };
+      return;
+    }
+
+    if (!Tools.isAggregationValid(aggregate)) {
+      ctx.response.status = 400;
+      ctx.response.body = { message: 'aggregate parameter is not valid.' };
       return;
     }
 
